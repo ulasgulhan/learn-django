@@ -6,14 +6,14 @@ from django.urls import reverse
 from datetime import datetime
 
 data = {
-    'telefon': ['samsung s20', 'samsung s21'],
+    'telefon': ['samsung s20', 'samsung s21', 'iphone 12'],
     'bilgisayar': ['laptop 1', 'laptop 2'],
     'elektronik': [],
 }
 
 def index(request):
     categories = list(data.keys())
-    return render(request, 'myapp/index.html', {
+    return render(request, 'index.html', {
         'categories': categories
     })
 
@@ -29,7 +29,7 @@ def get_products_by_category_id(request, category_id):
 def get_products_by_category(request, category):
     try:
         products = data[category]
-        return render(request, 'myapp/products.html', {
+        return render(request, 'products.html', {
             'category': category,
             'products': products,
             'now': datetime.now()
