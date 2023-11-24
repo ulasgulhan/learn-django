@@ -7,6 +7,7 @@ data = {
             'title': 'film adı 1',
             'description': 'film açıklama 1',
             'imageUrl': 'm1.jpg',
+            'coverImage': 'cover.jpg',
             'slug': 'film-adi-1',
             'language': 'english',
             'date': date(2021,10,10)
@@ -15,6 +16,7 @@ data = {
             'title': 'film adı 2',
             'description': 'film açıklama 2',
             'imageUrl': 'm2.jpg',
+            'coverImage': 'cover2.jpg',
             'slug': 'film-adi-2',
             'language': 'english',
             'date': date(2021,5,10)
@@ -23,6 +25,7 @@ data = {
             'title': 'film adı 3',
             'description': 'film açıklama 3',
             'imageUrl': 'm3.jpg',
+            'coverImage': 'cover3.jpg',
             'slug': 'film-adi-3',
             'language': 'english',
             'date': date(2021,10,5)
@@ -31,36 +34,36 @@ data = {
             'title': 'film adı 4',
             'description': 'film açıklama 4',
             'imageUrl': 'm4.jpg',
+            'coverImage': 'cover.jpg',
             'slug': 'film-adi-4',
             'language': 'english',
             'date': date(2020,10,5)
-        },
-                {
-            'title': 'film adı 5',
-            'description': 'film açıklama 5',
-            'imageUrl': 'm3.jpg',
-            'slug': 'film-adi-5',
-            'language': 'english',
-            'date': date(2021,5,5)
+        }
+    ],
+    'sliders': [
+        {
+            'slider_image': 'slider1.jpg',
+            'url': 'film-adi-1'
         },
         {
-            'title': 'film adı 6',
-            'description': 'film açıklama 6',
-            'imageUrl': 'm4.jpg',
-            'slug': 'film-adi-6',
-            'language': 'english',
-            'date': date(2020,5,5)
+            'slider_image': 'slider2.jpg',
+            'url': 'film-adi-2'
         },
-    ],
-    'sliders': []
+        {
+            'slider_image': 'slider3.jpg',
+            'url': 'film-adi-3'
+        },
+    ]
 }
 
 # Create your views here.
 
 def index(request):
     movies = data['movies'][-4:]
+    sliders = data['sliders']
     return render(request, 'index.html', {
-        'movies': movies
+        'movies': movies,
+        'sliders': sliders
     })
 
 def movies(request):
@@ -71,6 +74,13 @@ def movies(request):
 
 
 def movie_details(request, slug):
+    movies = data['movies']
+    # selected_movie = None
+    # for movie in movies:
+        # if movie['slug'] == slug:
+            # selected_movie = movie
+
+    selected_movie = next(movie for movie in movies if movie['slug'] == slug )
     return render(request, 'movie-details.html', {
-        'slug': slug,
+        'movie': selected_movie,
     })
