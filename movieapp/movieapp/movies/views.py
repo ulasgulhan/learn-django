@@ -11,6 +11,6 @@ def movies(request):
 
 
 def movie_details(request, slug):
-    return render(request, 'movie_details.html', {
+    return render(request, 'movie-details.html', {
         'slug': slug,
     })

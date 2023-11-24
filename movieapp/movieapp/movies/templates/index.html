@@ -1,5 +1,12 @@
 {% extends "movies/base.html" %}
 
+{% load static %}
+
+{% block css_file %}
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/slick/slick.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/slick/slick-theme.min.css" %}" />
+{% endblock  %}
+
 {% block page_title %}
     Index
 {% endblock  %}
