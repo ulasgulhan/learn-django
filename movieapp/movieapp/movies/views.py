@@ -1,13 +1,73 @@
-from django.http.response import HttpResponse
 from django.shortcuts import render
+from datetime import date
+
+data = {
+    'movies': [
+        {
+            'title': 'film adı 1',
+            'description': 'film açıklama 1',
+            'imageUrl': 'm1.jpg',
+            'slug': 'film-adi-1',
+            'language': 'english',
+            'date': date(2021,10,10)
+        },
+        {
+            'title': 'film adı 2',
+            'description': 'film açıklama 2',
+            'imageUrl': 'm2.jpg',
+            'slug': 'film-adi-2',
+            'language': 'english',
+            'date': date(2021,5,10)
+        },
+        {
+            'title': 'film adı 3',
+            'description': 'film açıklama 3',
+            'imageUrl': 'm3.jpg',
+            'slug': 'film-adi-3',
+            'language': 'english',
+            'date': date(2021,10,5)
+        },
+        {
+            'title': 'film adı 4',
+            'description': 'film açıklama 4',
+            'imageUrl': 'm4.jpg',
+            'slug': 'film-adi-4',
+            'language': 'english',
+            'date': date(2020,10,5)
+        },
+                {
+            'title': 'film adı 5',
+            'description': 'film açıklama 5',
+            'imageUrl': 'm3.jpg',
+            'slug': 'film-adi-5',
+            'language': 'english',
+            'date': date(2021,5,5)
+        },
+        {
+            'title': 'film adı 6',
+            'description': 'film açıklama 6',
+            'imageUrl': 'm4.jpg',
+            'slug': 'film-adi-6',
+            'language': 'english',
+            'date': date(2020,5,5)
+        },
+    ],
+    'sliders': []
+}
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    movies = data['movies'][-4:]
+    return render(request, 'index.html', {
+        'movies': movies
+    })
 
 def movies(request):
-    return render(request, 'movies.html')
+    movies = data['movies']
+    return render(request, 'movies.html', {
+        'movies': movies
+    })
 
 
 def movie_details(request, slug):
