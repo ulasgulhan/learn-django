@@ -1,7 +1,11 @@
 from django.db import models
+from django.forms import CharField
 from django.utils.text import slugify
 
-# Create your models here.
+
+class Category(models.Model):
+    name = CharField(max_length=100)
+
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
@@ -9,7 +13,7 @@ class Product(models.Model):
     description = models.CharField(max_length=200)
     imageUrl = models.CharField(max_length=50)
     isActive = models.BooleanField(default=False)
-    category = models.CharField(max_length=50, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     slug = models.SlugField(default="", blank=True, editable=False, null=False, db_index=True, unique=True)
 
     def save(self, *args, **kwargs):
