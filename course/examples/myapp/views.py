@@ -1,9 +1,10 @@
 from unicodedata import category
 from django.http import HttpResponseNotFound
-from django.http.response import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from datetime import datetime
+from .models import Product
+from django.db.models import Avg, Min, Max
 
 data = {
     'telefon': ['samsung s20', 'samsung s21', 'iphone 12'],
@@ -12,10 +13,26 @@ data = {
 }
 
 def index(request):
-    categories = list(data.keys())
-    return render(request, 'index.html', {
-        'categories': categories
-    })
+    products = Product.objects.all().order_by('-price')
+    product_count = Product.objects.filter(isActive=True).count()
+    price = Product.objects.filter(isActive=True).aggregate(Avg('price'), Min('price'), Max('price'))
+
+    context = {
+        'products': products,
+        'product_count': product_count,
+        'price': price
+    }
+    return render(request, 'index.html', context)
+
+
+def details(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+
+    context = {
+        'product': product
+    }
+
+    return render(request, 'details.html', context)
 
 
 def get_products_by_category_id(request, category_id):
