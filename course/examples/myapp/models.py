@@ -1,11 +1,31 @@
+from tkinter import CASCADE
 from django.db import models
 from django.forms import CharField
 from django.utils.text import slugify
 
 
 class Category(models.Model):
-    name = CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
+    def __str__(self) -> str:
+        return self.name
+
+
+class Address(models.Model):
+    street = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=5)
+    city = models.CharField(max_length=30)
+
+    def __str__(self) -> str:
+        return f'{self.street} {self.postal_code} {self.city}'
+
+
+class Supplier(models.Model):
+    company_name = models.CharField(max_length=100)
+    address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
+
+    def __str__(self) -> str:
+        return self.company_name
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
@@ -13,12 +33,9 @@ class Product(models.Model):
     description = models.CharField(max_length=200)
     imageUrl = models.CharField(max_length=50)
     isActive = models.BooleanField(default=False)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    slug = models.SlugField(default="", blank=True, editable=False, null=False, db_index=True, unique=True)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super().save(args, kwargs)
+    slug = models.SlugField(default="", blank=True, null=False, db_index=True, unique=True)
+    categories = models.ManyToManyField(Category)
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, null=True)
 
     def __str__(self) -> str:
         return f'{self.name} {self.price} {self.slug}'
