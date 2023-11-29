@@ -35,17 +35,30 @@ class Person(models.Model):
     biography = models.CharField(max_length=3000)
     image_name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
-    gender = models.CharField(max_length=1, choices=genders)
-    duty_type = models.CharField(max_length=1, choices=duty_types)
+    gender = models.CharField('Cinsiyet', max_length=1, choices=genders)
+    duty_type = models.CharField('Görev', max_length=1, choices=duty_types)
     contact = models.OneToOneField(Contact, on_delete=models.CASCADE, null=True, blank=True)
+
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+    
+    full_name.fget.short_description = 'Ad Soyad'
+
+
+    class Meta:
+        verbose_name = 'Kişi'
+        verbose_name_plural = 'Kişiler'
+    
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name} ({self.duty_types[int(self.duty_type)-1][1]})'
 
 class Movie(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField(validators = [MinLengthValidator(20)])
-    image_name = models.CharField(max_length=50)
+    title = models.CharField('Başlık', max_length=100)
+    description = models.TextField('Özet', validators = [MinLengthValidator(20)])
+    image_name = models.CharField('Resim', max_length=50)
     image_cover = models.CharField(max_length=50)
     date = models.DateField()
     slug = models.SlugField(unique=True, db_index=True)
@@ -53,6 +66,10 @@ class Movie(models.Model):
     language = models.CharField(max_length=100)
     people = models.ManyToManyField(Person)
     genres = models.ManyToManyField(Genre)
+
+    class Meta:
+        verbose_name = 'Film'
+        verbose_name_plural = 'Filmler'
 
     def __str__(self) -> str:
         return self.title
