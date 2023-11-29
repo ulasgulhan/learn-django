@@ -1,31 +1,35 @@
-{% extends "movies/base.html" %} {% load static %} {% block css_file %}
-{%endblock %} {% block page_title %} Movies {% endblock %} {% block content %}
-<div id="wrapper">
+{% extends 'movies/base.html' %} 
 
-    {% include "partials/_sidebar.html" %}
+{% load static %} 
+{% block css_files %} {%endblock %} 
+
+{% block page_title %} Movies {% endblock %} 
+
+{% block content %}
+
+<div id="wrapper">
+  {% include 'partials/_sidebar.html' %}
 
   <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
-        {% include "partials/_topbar.html" %}
+     {% include 'partials/_topbar.html' %}
 
       <div class="container-fluid">
         <div class="row">
           <div class="col-xl-12 col-lg-12">
             <div class="cover-pic">
-              <div
-                class="position-absolute bg-white shadow-sm rounded text-center p-2 m-4 love-box"
-              >
+              <div class="position-absolute bg-white shadow-sm rounded text-center p-2 m-4 love-box">
                 <h6 class="text-gray-900 mb-0 font-weight-bold">
                   <i class="fas fa-heart text-danger"></i> 50%
                 </h6>
                 <small class="text-muted">8,784</small>
               </div>
-              <img src="{% static "img/"|add:movie.coverImage %}" class="img-fluid" alt="..." />
+              <img src="{% static 'img/'|add:movie.coverImage %}" class="img-fluid" alt="..." />
             </div>
           </div>
           <div class="col-xl-3 col-lg-3">
             <div class="bg-white p-3 widget shadow rounded mb-4">
-              <img src="{% static "img/"|add:movie.imageUrl %}" class="img-fluid rounded" alt="..." />
+              <img src="{% static 'img/'|add:movie.imageUrl %}" class="img-fluid rounded" alt="..." />
               <h1 class="h6 mb-0 mt-3 font-weight-bold text-gray-900">
                 Director
               </h1>
@@ -46,8 +50,7 @@
           <div class="col-xl-9 col-lg-9">
             <div class="bg-white info-header shadow rounded mb-4">
               <div
-                class="row d-flex align-items-center justify-content-between p-3 border-bottom"
-              >
+                class="row d-flex align-items-center justify-content-between p-3 border-bottom">
                 <div class="col-lg-7 m-b-4">
                   <h3 class="text-gray-900 mb-0 mt-0 font-weight-bold">
                     {{ movie.title }}
@@ -55,8 +58,7 @@
                   <p class="mb-0 text-gray-800">
                     <small class="text-muted"
                       ><i class="fas fa-film fa-fw fa-sm mr-1"></i> Action /
-                      Adventure / Science Fiction / 3D</small
-                    >
+                      Adventure / Science Fiction / 3D</small>
                   </p>
                 </div>
                 <div class="col-lg-5 text-right">
@@ -74,14 +76,11 @@
                 </div>
               </div>
               <div
-                class="row d-flex align-items-center justify-content-between py-3 px-4"
-              >
+                class="row d-flex align-items-center justify-content-between py-3 px-4">
                 <div class="col-lg-6 m-b-4">
                   <p class="mb-0 text-gray-900">
                     <i class="fas fa-money-bill fa-sm fa-fw mr-1"></i> BUDGET -
-                    <span class="text-white rounded px-2 py-1 bg-info"
-                      >$160,000,000</span
-                    >
+                    <span class="text-white rounded px-2 py-1 bg-info">$160,000,000</span>
                   </p>
                 </div>
                 <div class="col-lg-6 text-right">
@@ -153,7 +152,7 @@
               </ul>
               <div class="tab-content" id="myTabContent">
                 <div
-                  class="tab-pane fade show active"
+                  class="tab-pane fade active show"
                   id="home"
                   role="tabpanel"
                   aria-labelledby="home-tab"
@@ -208,7 +207,7 @@
                           <div class="dropdown-list-image mr-3">
                             <img
                               class="rounded-circle"
-                              src="img/s1.png"
+                              src="{% static 'img/s1.png' %}"
                               alt=""
                             />
                             <div class="status-indicator bg-success"></div>
@@ -224,7 +223,7 @@
                           <div class="dropdown-list-image mr-3">
                             <img
                               class="rounded-circle"
-                              src="img/s2.png"
+                              src="{% static 'img/s2.png' %}"
                               alt=""
                             />
                             <div class="status-indicator bg-success"></div>
@@ -685,7 +684,7 @@
       </div>
     </div>
 
-    {% include "partials/_footer.html" %}
+   {% include 'partials/_footer.html' %}
   </div>
 </div>
 
@@ -693,14 +692,7 @@
   <i class="fas fa-angle-up"></i>
 </a>
 
-<div
-  class="modal fade"
-  id="logoutModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -709,8 +701,7 @@
           class="close"
           type="button"
           data-dismiss="modal"
-          aria-label="Close"
-        >
+          aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>

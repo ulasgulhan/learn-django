@@ -1,12 +1,16 @@
-{% extends "movies/base.html" %} {% load static %} {% block css_file %}
-{%endblock %} {% block page_title %} Movies {% endblock %} {% block content %}
-<div id="wrapper">
+{% extends 'movies/base.html' %} 
 
-  {% include "partials/_sidebar.html" %}
+{% load static %} 
+
+{% block css_files %} {% endblock %} 
+{% block page_title %} Movies {% endblock %} {% block content %}
+
+<div id="wrapper">
+  {% include 'partials/_sidebar.html' %}
 
   <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
-      {% include "partials/_topbar.html" %}
+      {% include 'partials/_topbar.html' %}
 
       <div class="container-fluid">
         <div
@@ -19,14 +23,17 @@
             >Reset Filters <i class="fas fa-times fa-sm text-white-50"></i
           ></a>
         </div>
+
         <div class="row">
           <div class="col">
             <div class="row">
-              {% for movie in movies %}
+
+              {% for movie in movies %}               
                 <div class="col-xl-4 col-md-6 mb-4">
-                  {% include "partials/_movie.html" %}
+                  {% include 'partials/_movie.html' %}
                 </div>
               {% endfor %}
+             
             </div>
             <div class="text-center mt-1 mb-4 col-12">
               <div class="spinner-border" role="status">
@@ -38,7 +45,7 @@
       </div>
     </div>
 
-    {% include "partials/_footer.html" %}
+   {% include 'partials/_footer.html' %}
   </div>
 </div>
 
