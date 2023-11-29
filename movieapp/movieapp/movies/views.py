@@ -1,45 +1,9 @@
 from datetime import date
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+
+from movies.models import Movie
 
 data = {
-    "movies": [
-        {
-            "title": "film adı 1",
-            "description": "film açıklama 1",
-            "imageUrl": "m1.jpg",
-            "coverImage": "cover3.jpg",
-            "slug": "film-adi-1",
-            "language": "english",
-            "date": date(2021,10,10)
-        },
-        {
-            "title": "film adı 2",
-            "description": "film açıklama 2",
-            "imageUrl": "m2.jpg",
-            "coverImage": "cover2.jpg",
-            "slug": "film-adi-2",
-            "language": "english",
-            "date": date(2021,5,10)
-        },
-        {
-            "title": "film adı 3",
-            "description": "film açıklama 3",
-            "imageUrl": "m3.jpg",
-            "coverImage": "cover.jpg",
-            "slug": "film-adi-3",
-            "language": "english",
-            "date": date(2021,10,5)
-        },
-        {
-            "title": "film adı 4",
-            "description": "film açıklama 4",
-            "imageUrl": "m4.jpg",
-            "coverImage": "cover.jpg",
-            "slug": "film-adi-4",
-            "language": "english",
-            "date": date(2020,10,5)
-        }
-    ],
     "sliders": [
         {
             "slider_image": "slider1.jpg",
@@ -59,7 +23,7 @@ data = {
 # Create your views here.
 
 def index(request):
-    movies = data["movies"][-4:]
+    movies = Movie.objects.filter(is_active = True, is_home = True)
     sliders = data["sliders"]
     return render(request, 'index.html', {
         "movies": movies,
@@ -67,20 +31,17 @@ def index(request):
     })
 
 def movies(request):
-    movies = data["movies"]
+    movies = Movie.objects.filter(is_active = True)
     return render(request, 'movies.html', {
         "movies": movies
     })
 
 def movie_details(request, slug):
-    movies = data["movies"]
-    # selectedMovie = None
-    # for movie in movies:
-    #     if movie["slug"] == slug:
-    #         selectedMovie = movie
-
-    selectedMovie = next(movie for movie in movies if movie["slug"] == slug)
+    movie = get_object_or_404(Movie, slug=slug)
 
     return render(request, 'movie-details.html', {
-        "movie": selectedMovie
+        "movie": movie,
+        'genres': movie.genres.all(),
+        'people': movie.people.all(),
+        'videos': movie.video_set.all()
 })

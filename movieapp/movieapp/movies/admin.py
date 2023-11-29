@@ -3,9 +3,9 @@ from movies.models import Contact, Genre, Movie, Person, Video
 
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('title', 'is_active', 'is_home',)
     prepopulated_fields = {'slug': ('title',) }
-    list_filter = ('genres', 'language',)
+    list_filter = ('genres', 'language', 'is_active', 'is_home',)
     search_fields = ('title', 'description',)
 
 
