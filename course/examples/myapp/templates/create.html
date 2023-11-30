@@ -13,24 +13,19 @@
 <div class="container">
     <div class="row">
         <div class="col">
-           <form action="create" method='POST'>
+           <form action="create" method='POST' novalidate>
                 {% csrf_token %}
-                <div class='mb-3'>
-                    <label for="product_name">Name</label>
-                    <input type="text" name="product_name" class='form-control' id='product_name'>
-                </div>
-                <div class='mb-3'>
-                    <label for="price">Price</label>
-                    <input type="number" name="price" class='form-control' id='price'>
-                </div>
-                <div class='mb-3'>
-                    <label for="description">Description</label>
-                    <textarea class='form-control' name="description"></textarea>
-                </div>
-                <div class='mb-3'>
-                    <label for="slug">Slug</label>
-                    <input type="text" name="slug" class='form-control' id='slug'>
-                </div>
+                {% for field in form %}
+                    <div class="mb-3 {% if field.errors %} invalid {% endif %}">
+                        {% if field.errors %}
+                            <div class='alert alert-danger'>
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+                        <label class='form-label' for="{{ field.id_for_label }}"> {{ field.label }} </label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
 
                 <button type='submit' class='btn btn-primary'>Submit</button>
            </form>

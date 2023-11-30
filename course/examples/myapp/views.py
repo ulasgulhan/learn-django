@@ -1,10 +1,7 @@
-from unicodedata import category
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
-from datetime import datetime
+from .forms import ProductCreateForm
 from .models import Product
-from django.db.models import Avg, Min, Max
 
 
 def index(request):
@@ -32,16 +29,23 @@ def list(request):
 
 def create(request):
     if request.method == 'POST':
-        product_name = request.POST['product_name']
-        price = request.POST['price']
-        description = request.POST['description']
-        slug = request.POST['slug']
+        form = ProductCreateForm(request.POST)
 
-        p = Product(name = product_name, description = description, price = price, imageUrl = '1.jpg', slug = slug)
-        p.save()
-        return HttpResponseRedirect('list')
+        if form.is_valid():
+
+            p = Product(name = form.cleaned_data['product_name'], 
+                        description = form.cleaned_data['description'], 
+                        price = form.cleaned_data['price'], 
+                        imageUrl = '1.jpg', 
+                        slug = form.cleaned_data['slug'])
+            p.save()
+            return HttpResponseRedirect('list')
+    else:
+        form = ProductCreateForm()
     
-    return render(request, 'create.html')
+    return render(request, 'create.html', {
+        'form': form
+    })
 
 
 
