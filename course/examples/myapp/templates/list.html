@@ -16,8 +16,9 @@
            <ul>
                 {% for product in products %}
                     <li>
-                        <a href={% url 'product_details' product.slug %}> {{ product.name }} </a>
-                        - {{ product.price }}
+                        {{ product.name }} - {{ product.price }}
+                        <a href="{% url "product_edit" product.id %}">Edit</a>
+                        <a href="{% url "delete_edit" product.id %}">Delete</a>
                     </li>
                 {% endfor %}
            </ul>

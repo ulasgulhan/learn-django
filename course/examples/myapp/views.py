@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import ProductCreateForm
+from .forms import ProductForm
 from .models import Product
 
 
@@ -29,21 +29,30 @@ def list(request):
 
 def create(request):
     if request.method == 'POST':
-        form = ProductCreateForm(request.POST)
+        form = ProductForm(request.POST)
 
         if form.is_valid():
-
-            p = Product(name = form.cleaned_data['product_name'], 
-                        description = form.cleaned_data['description'], 
-                        price = form.cleaned_data['price'], 
-                        imageUrl = '1.jpg', 
-                        slug = form.cleaned_data['slug'])
-            p.save()
+            form.save()
             return HttpResponseRedirect('list')
     else:
-        form = ProductCreateForm()
+        form = ProductForm()
     
     return render(request, 'create.html', {
+        'form': form
+    })
+
+
+def edit(request, id):
+    product = get_object_or_404(Product, pk=id)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product_list')
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'edit.html', {
         'form': form
     })
 
