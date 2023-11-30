@@ -15,12 +15,10 @@
         <div class="col">
            <ul>
                 {% for product in products %}
-                    {% if product.isActive %}
-                        <li>
-                            <a href={% url 'product_details' product.slug %}> {{ product.name }} </a>
-                            - {{ product.price }}
-                        </li>
-                    {% endif %}
+                    <li>
+                        <a href={% url 'product_details' product.slug %}> {{ product.name }} </a>
+                        - {{ product.price }}
+                    </li>
                 {% endfor %}
            </ul>
         </div>
