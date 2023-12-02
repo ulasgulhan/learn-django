@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import ProductForm
+from .forms import ProductForm, UploadForm
 from .models import Product
 import random
 import os
@@ -93,7 +93,16 @@ def handle_uploaded_file(file):
 
 def upload(request):
     if request.method == 'POST':
-        uploaded_image = request.FILES['image']
-        handle_uploaded_file(uploaded_image)
-        return render(request, 'succsess.html')
-    return render(request, 'upload.html')
+        form = UploadForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            uploaded_images = request.FILES['image']
+            handle_uploaded_file(uploaded_images)
+            print(request.POST)
+            return render(request, 'succsess.html')
+    else:
+        form = UploadForm()
+    
+    return render(request, 'upload.html', {
+        'form': form
+    })

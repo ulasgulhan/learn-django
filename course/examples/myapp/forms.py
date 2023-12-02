@@ -35,3 +35,7 @@ class ProductForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class':'form-control'}),
             'slug': forms.TextInput(attrs={'class':'form-control'})
         }
+
+
+class UploadForm(forms.Form):
+    image = forms.FileField()
