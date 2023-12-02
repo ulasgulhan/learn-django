@@ -2,6 +2,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import ProductForm
 from .models import Product
+import random
+import os
 
 
 def index(request):
@@ -78,3 +80,20 @@ def details(request, slug):
     }
 
     return render(request, 'details.html', context)
+
+
+def handle_uploaded_file(file):
+    number = random.randint(10000, 99999)
+    filename, file_extension = os.path.splitext(file.name)
+    name = filename + '_' + str(number) + file_extension
+    with open('temp/' + name, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+
+
+def upload(request):
+    if request.method == 'POST':
+        uploaded_image = request.FILES['image']
+        handle_uploaded_file(uploaded_image)
+        return render(request, 'succsess.html')
+    return render(request, 'upload.html')
