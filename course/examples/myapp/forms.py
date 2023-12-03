@@ -16,7 +16,7 @@ from .models import Product
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('name', 'price', 'description', 'slug',)
+        fields = ('name', 'price', 'description', 'slug', 'image',)
         error_massages = {
             'name': {
                 'required': 'name gerekli alan',

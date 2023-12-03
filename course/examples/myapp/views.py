@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import ProductForm, UploadForm
-from .models import Product
+from .models import Product, UploadModel
 import random
 import os
 
@@ -31,7 +31,7 @@ def list(request):
 
 def create(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
@@ -48,7 +48,7 @@ def edit(request, id):
     product = get_object_or_404(Product, pk=id)
 
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
+        form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
             return redirect('product_list')
@@ -82,23 +82,13 @@ def details(request, slug):
     return render(request, 'details.html', context)
 
 
-def handle_uploaded_file(file):
-    number = random.randint(10000, 99999)
-    filename, file_extension = os.path.splitext(file.name)
-    name = filename + '_' + str(number) + file_extension
-    with open('temp/' + name, 'wb+') as destination:
-        for chunk in file.chunks():
-            destination.write(chunk)
-
-
 def upload(request):
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
 
         if form.is_valid():
-            uploaded_images = request.FILES['image']
-            handle_uploaded_file(uploaded_images)
-            print(request.POST)
+            model = UploadModel(image = request.FILES['image'])
+            model.save()
             return render(request, 'succsess.html')
     else:
         form = UploadForm()
