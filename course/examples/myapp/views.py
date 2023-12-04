@@ -12,7 +12,7 @@ def index(request):
     context = {
         'products': products,
     }
-    return render(request, 'index.html', context)
+    return render(request, 'myapp/index.html', context)
 
 
 def list(request):
@@ -26,7 +26,7 @@ def list(request):
         'products': products,
     }
 
-    return render(request, 'list.html', context)
+    return render(request, 'myapp/list.html', context)
 
 
 def create(request):
@@ -39,7 +39,7 @@ def create(request):
     else:
         form = ProductForm()
     
-    return render(request, 'create.html', {
+    return render(request, 'myapp/create.html', {
         'form': form
     })
 
@@ -54,7 +54,7 @@ def edit(request, id):
             return redirect('product_list')
     else:
         form = ProductForm(instance=product)
-    return render(request, 'edit.html', {
+    return render(request, 'myapp/edit.html', {
         'form': form
     })
 
@@ -66,7 +66,7 @@ def delete(request, id):
         product.delete()
         return redirect('product_list')
 
-    return render(request, 'delete-confirm.html', {
+    return render(request, 'myapp/delete-confirm.html', {
         'product': product
     })
 
@@ -79,7 +79,7 @@ def details(request, slug):
         'product': product
     }
 
-    return render(request, 'details.html', context)
+    return render(request, 'myapp/details.html', context)
 
 
 def upload(request):
@@ -89,10 +89,10 @@ def upload(request):
         if form.is_valid():
             model = UploadModel(image = request.FILES['image'])
             model.save()
-            return render(request, 'succsess.html')
+            return render(request, 'myapp/succsess.html')
     else:
         form = UploadForm()
     
-    return render(request, 'upload.html', {
+    return render(request, 'myapp/upload.html', {
         'form': form
     })
