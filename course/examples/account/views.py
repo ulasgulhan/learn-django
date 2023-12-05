@@ -1,7 +1,8 @@
+import re
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib import messages
 
 def login_request(request):
     if request.user.is_authenticated:
@@ -15,13 +16,13 @@ def login_request(request):
             login(request, user)
             nextUrl = request.GET.get('next', None)
             if nextUrl is None:
+                messages.success(request, 'login successful')
                 return redirect('index')
             else:
                 return redirect(nextUrl)
         else:
-            return render(request, 'account/login.html', {
-                'error': 'Wrong username or password'
-            })
+            messages.error(request, 'Wrong username or password')
+            return render(request, 'account/login.html')
     else:
         return render(request, 'account/login.html')
 
@@ -50,4 +51,5 @@ def register_request(request):
 
 def logout_request(request):
     logout(request)
+    messages.success(request, 'Logout success')
     return redirect('index')

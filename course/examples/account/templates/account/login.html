@@ -16,11 +16,15 @@
           <hr>
           <form method="POST">
             {% csrf_token %}
-            {% if error %}
-              <div class="alert alert-warning">
-                {{error}}
-              </div>
+            {% if messages %}
+              <ul class="messages">
+                {% for message in messages %}
+                  <li {% if message.tags %} class="{{message.tags}}"{% endif %}>{{message}}</li>
+                {% endfor %}
+              </ul>
             {% endif %}
+
+
             <div class="mb-3">
               <label for="username" class="form-laber">Username</label>
               <input type="text" name="username" id="username" class="form-control" required>
