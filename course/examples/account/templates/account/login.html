@@ -13,6 +13,24 @@
     <div class="row">
         <div class="col">
           <h1>Login</h1>
+          <hr>
+          <form method="POST">
+            {% csrf_token %}
+            {% if error %}
+              <div class="alert alert-warning">
+                {{error}}
+              </div>
+            {% endif %}
+            <div class="mb-3">
+              <label for="username" class="form-laber">Username</label>
+              <input type="text" name="username" id="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-laber">Password</label>
+              <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+            <input type="submit" value="login" class="btn btn-primary">
+          </form>
         </div>
     </div>
 </div>
