@@ -2,8 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import ProductForm, UploadForm
 from .models import Product, UploadModel
-import random
-import os
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -14,7 +13,7 @@ def index(request):
     }
     return render(request, 'myapp/index.html', context)
 
-
+@login_required(login_url='/account/login')
 def list(request):
     if 'q' in request.GET and request.GET.get('q'):
         q = request.GET['q']
@@ -28,7 +27,7 @@ def list(request):
 
     return render(request, 'myapp/list.html', context)
 
-
+@login_required(login_url='/account/login')
 def create(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
