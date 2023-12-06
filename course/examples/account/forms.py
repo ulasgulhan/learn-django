@@ -1,6 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
-from django.forms import widgets
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
+from django.forms import fields, widgets
 from django.contrib import messages
 
 class LoginUserForm(AuthenticationForm):
@@ -19,3 +20,24 @@ class LoginUserForm(AuthenticationForm):
     def confirm_login_allowed(self, user):
         if user.username.startswith('k'):
             raise forms.ValidationError("Can't login with this username")
+
+
+class NewUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'email',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].widget = widgets.PasswordInput(attrs={'class':'form-control'})
+        self.fields['password2'].widget = widgets.PasswordInput(attrs={'class':'form-control'})
+        self.fields['username'].widget = widgets.TextInput(attrs={'class':'form-control'})
+        self.fields['email'].widget = widgets.EmailInput(attrs={'class':'form-control'})
+        self.fields['email'].required = True
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if User.objects.filter(email = email).exists():
+            self.add_error('email', 'This email used before')
+        return email

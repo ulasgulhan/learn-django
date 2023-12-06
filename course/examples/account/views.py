@@ -1,10 +1,10 @@
 import re
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import LoginUserForm
+from .forms import LoginUserForm, NewUserForm
 
 def login_request(request):
     if request.user.is_authenticated:
@@ -31,24 +31,21 @@ def login_request(request):
 
 def register_request(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        repassword = request.POST['repassword']
-        if password == repassword:
-            if User.objects.filter(username = username).exists():
-                return render(request, 'account/register.html', {'error': 'This username is taken'})
-            else:
-                if User.objects.filter(email = email).exists():
-                    return render(request, 'account/register.html', {'error': 'This email is taken'})
-                else:
-                    user = User.objects.create_user(username=username, email=email, password=password)
-                    user.save()
-                    return redirect('login')
+        form = NewUserForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('index')
         else:
-            return render(request, 'account/register.html', {'error': 'Passwords not match'})
+            return render(request, 'account/register.html', {'form':form})
     else:
-        return render(request, 'account/register.html')
+        form = NewUserForm()
+        return render(request, 'account/register.html', {'form':form})
+
 
 
 def logout_request(request):
