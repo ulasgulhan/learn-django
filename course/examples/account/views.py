@@ -1,30 +1,32 @@
 import re
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .forms import LoginUserForm
 
 def login_request(request):
     if request.user.is_authenticated:
         return redirect('index')
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        form = LoginUserForm(request, data = request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
-            nextUrl = request.GET.get('next', None)
-            if nextUrl is None:
-                messages.success(request, 'login successful')
+            if user is not None:
+                login(request, user)
                 return redirect('index')
             else:
-                return redirect(nextUrl)
+                return render(request, 'account/login.html', {'form': form})
         else:
-            messages.error(request, 'Wrong username or password')
-            return render(request, 'account/login.html')
+                return render(request, 'account/login.html', {'form': form})
     else:
-        return render(request, 'account/login.html')
+        form = LoginUserForm()
+        return render(request, 'account/login.html', {'form': form})
+
 
 
 def register_request(request):
