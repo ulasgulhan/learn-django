@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-# learn django
-=======
-# learn django
->>>>>>> 4f8e890466ae555346a3fc2d23afdf5af105227a
+I created a repository where I completed the Django tutorials I took on Udemy.
